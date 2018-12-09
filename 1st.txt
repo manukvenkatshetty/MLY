@@ -1,0 +1,30 @@
+    import csv
+ 
+    with open("training.csv") as file:
+
+        data = csv.reader(file,delimiter=",")
+
+        hypo = []
+
+        for row in data:
+
+            if row[len(row)-1].upper() =="YES":
+
+            
+                hypo.append(row)
+
+    fhypo = hypo[0]
+
+    for row in hypo:
+
+        for col in range(len(fhypo)-1):
+
+            if fhypo[col] != row[col]:
+
+                fhypo[col] ="?"
+
+        print(fhypo)
+
+    print(fhypo[0:-1])
+   
+  

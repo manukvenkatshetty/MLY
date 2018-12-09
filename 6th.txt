@@ -1,0 +1,25 @@
+from sklearn.datasets import fetch_20newsgroups
+from sklearn.metrics import confusion_matrix ,classification_report,accuracy_score
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer ,TfidfTransformer
+
+
+categories = ['alt.atheism', 'soc.religion.christian','comp.graphics', 'sci.med']
+twenty_train = fetch_20newsgroups(subset='train',categories=categories)
+twenty_test = fetch_20newsgroups(subset='test',categories=categories)
+
+count = CountVectorizer()
+tfidf = TfidfTransformer()
+mod = MultinomialNB()
+
+train = count.fit_transform(twenty_train.data)
+train = tfidf.fit_transform(train)
+mod.fit(train, twenty_train.target)
+
+test = count.transform(twenty_test.data)
+test = tfidf.transform(test)
+predicted = mod.predict(test)
+
+print("Accuracy:", accuracy_score(twenty_test.target, predicted))
+print(classification_report(twenty_test.target, predicted, target_names=twenty_test.target_names))
+print("confusion matrix is \n",confusion_matrix(twenty_test.target, predicted))

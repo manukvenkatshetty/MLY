@@ -1,0 +1,35 @@
+    import numpy as np
+    import pandas as pd
+    
+    data = pd.read_csv("training.csv")
+    concept = np.array(data.iloc[:,0:-1])
+    target = np.array(data.iloc[:,-1])
+    
+    def learn(concept,target):
+        sh = concept[0]
+        gh = [['?' for i in range(len(sh))]for i in range(len(sh))]
+        print(sh,\"\\n\\n\")
+        print(gh,\"\\n\\n\")
+
+        for i,val in enumerate(concept):
+            if target[i].upper() == "YES":
+                for col in range(len(sh)):
+                    if val[col] != sh[col]:
+                        sh[col] = "?"
+                        gh[col][col] = "?"
+            if target[i].upper() == "NO":
+                for col in range(len(sh)):
+                    if val[col] != sh[col]:
+                        gh[col][col] = sh[col]
+                    else:
+                        gh[col][col] = "?"
+            print(i,":",sh,\"\n\n")
+            print(i,":",gh,\"\n\n")
+        ind = [i for i,val in enumerate(gh) if val == ['?','?','?','?','?','?']]
+        for i in ind:
+            gh.remove(['?','?','?','?','?','?'])
+        return sh,gh
+        
+    sf,gf=learn(concept,target)
+    print(sf,'\n\n')
+    print(gf)
